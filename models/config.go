@@ -92,7 +92,7 @@ type MetadataErc721 struct {
 	Image       string              `json:"image,omitempty"`
 	Dna         string              `json:"dna,omitempty"`
 	Attributes  []MetaDataAttribute `json:"attributes"`
-	Compiler    string              `json:"compiler"`
+	Compiler    string              `json:"compiler,omitempty"`
 }
 
 type MetaDataAttribute struct {
