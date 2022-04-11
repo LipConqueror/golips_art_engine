@@ -7,8 +7,8 @@
 	"limitDelimiter": "*",
 	"dnaDelimiter": "-",
 	"format": {
-		"width": 1500,
-		"height": 1500,
+		"width": 512,
+		"height": 512,
 		"smoothing": false
 	},
 	"background": {
@@ -35,76 +35,42 @@
 	"processCount": 2,
 	"layerConfigurations": [{
 		"growEditionSizeTo": 10,
-		"layersOrder": [{
-				"name": "Hair Color",
-				"options": {
-					"isColorBase": true,
-					"colorSet": "Hair"
-				}
-			},
+		"layersOrder": [
 			{
-				"name": "Skin"
-			},
-			{
-				"name": "Base Body",
+				"name": "square",
 				"options": {
 					"bypassDNA": true,
 					"hideInMetadata": true
 				}
 			},
 			{
-				"name": "Back Hair",
+				"name": "circle color",
 				"options": {
-					"colorSet": "Hair"
+					"isColorBase": true,
+					"colorSet": "circle"
 				}
 			},
 			{
-				"name": "Choker",
+				"name": "circle 1",
 				"options": {
-					"displayName": "Neck"
+					"colorSet": "circle",
+					"displayName": "inner case"
 				}
 			},
 			{
-				"name": "Cloth"
-			},
-			{
-				"name": "Ear"
-			},
-			{
-				"name": "Mouth"
-			},
-			{
-				"name": "Eye"
-			},
-			{
-				"name": "Eye Shadow"
-			},
-			{
-				"name": "Eyebrow"
-			},
-			{
-				"name": "Face"
-			},
-			{
-				"name": "Middle Hair",
+				"name": "circle 2",
 				"options": {
-					"colorSet": "Hair"
+					"colorSet": "circle"
 				}
 			},
 			{
-				"name": "Front Hair",
+				"name": "circle 3",
 				"options": {
-					"colorSet": "Hair"
+					"colorSet": "circle"
 				}
 			},
 			{
-				"name": "Eye Cover"
-			},
-			{
-				"name": "Head"
-			},
-			{
-				"name": "Holding"
+				"name": "triangle"
 			}
 		]
 	}]

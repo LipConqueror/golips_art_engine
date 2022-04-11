@@ -3,3 +3,4 @@
 builds/*
 golips_art_engine
 layers-lipc
+conf/config-lipc.json

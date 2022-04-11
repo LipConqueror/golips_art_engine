@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	inputDir          = "layers-lipc"
+	inputDir          = "layers"
 	outputDir         = "builds"
 	outputImagesDir   = "images"
 	outputMetadataDir = "json"
