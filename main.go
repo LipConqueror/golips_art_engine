@@ -19,9 +19,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/LipConqueror/golips_art_engine/conf"
-	"github.com/LipConqueror/golips_art_engine/models"
-	"github.com/LipConqueror/golips_art_engine/utils"
+	"golips_art_engine/conf"
+	"golips_art_engine/models"
+	"golips_art_engine/utils"
 )
 
 const (

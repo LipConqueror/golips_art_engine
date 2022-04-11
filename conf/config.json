@@ -21,12 +21,12 @@
 	},
 	"metadataSettings": {
 		"saveDnaInMetadata": true,
-		"showNoneInMetadata": true,
+		"showNoneInMetadata": false,
 		"noneAttributeName": "none"
 	},
 	"logSettings": {
-		"showGeneratingProgress": true,
-		"debug": true
+		"showGeneratingProgress": false,
+		"debug": false
 	},
 	"processCount": 2,
 	"layerConfigurations": [{

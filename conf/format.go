@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/LipConqueror/golips_art_engine/models"
+	"golips_art_engine/models"
 )
 
 func GetConfig(debug bool) (*models.Config, error) {
