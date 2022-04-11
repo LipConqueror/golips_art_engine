@@ -4,8 +4,11 @@ The inspiration for this tool is based on [HashLips Art Engine](https://github.c
 
 ## Our official links
 [🐦  Twitter](https://twitter.com/LipConqueror)
+
 [💄  Discord](https://discord.gg/ey2Ek2bXAD)
+
 [💄  NFT](https://lipconq.com/)
+
 
 ## Why building a new tool?
 JS is very general, but there are still some dependency problems (especially canvas-related libraries), we believe many people will face the same problems as we do.
@@ -36,7 +39,7 @@ And our goal is: efficient and sustainable use (only use official libraries).
 - More metadata output options
 	- show 'none' property or not, show dna or not, etc.
 - Save and load DNA history (coming soon)
-- Numerical property generation (coming soon)
+- Numerical attributes generation (coming soon)
 
 ## Installation
 Please make sure to install the official environment of the go language. (>= go 1.16)
