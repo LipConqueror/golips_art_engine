@@ -116,12 +116,16 @@ func main() {
 
 	log.Println("Async Process Count: ", processCount)
 
-	// use cache to boost the render
 	var (
 		genCount = 0
 
+		// use cache to boost the render
 		imgCache = make(map[string]image.Image, 0)
 		imgMutex = sync.RWMutex{}
+
+		// save dna to check
+		existDNAs = make(map[string]bool, 0)
+		dnaMutex  = sync.RWMutex{}
 
 		processChan = make(chan bool, processCount)
 	)
@@ -131,11 +135,6 @@ func main() {
 	}
 
 	for batch, c := range config.LayerConfigurations {
-
-		var (
-			existDNAs = make(map[string]bool, 0)
-			dnaMutex  = sync.RWMutex{}
-		)
 
 		if config.LogSettings.ShowGeneratingProgress {
 			log.Println("Generating batch: ", batch)
@@ -149,7 +148,7 @@ func main() {
 				break
 			}
 
-			// use these num in sync process instead of i
+			// use this num in async process instead of i
 			num := i
 
 			// if start id in config has been set, use it.
@@ -165,14 +164,15 @@ func main() {
 			go func() {
 				dst := image.NewRGBA(image.Rect(0, 0, config.Format.Width, config.Format.Height))
 
+				// generate random background
 				if config.Background.Generate {
 					backColor := genColor(config.Background.BrightnessNum)
 
 					draw.Draw(dst, dst.Bounds(), &image.Uniform{backColor}, image.ZP, draw.Src)
-
 				}
 
 				var (
+					// make sure the program won't last forever, break it if it can not create new dna.
 					dnaCheckTimes = 0
 					dna           string
 					elements      []models.LayerElement
@@ -387,8 +387,10 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 			target -= v.Weight
 
 			if target < 0 {
+				// save layer info in elements to simplify the logic
 				v.BelongLayerName = layer.Options.DisplayName
 				v.HideInMetadata = layer.Options.HideInMetadata
+
 				elementList = append(elementList, v)
 
 				dnaKey := getLimitKey(layer.Options.DisplayName, v.Name)
@@ -511,6 +513,7 @@ func getElementsFromDir(dir string, isColorSet bool, startId int) ([]models.Laye
 // get name , rarity , color
 func cleanName(name string, isColorSet bool) (string, float64, string, error) {
 
+	// filter system files, such as .DS_Store
 	if strings.HasPrefix(name, ".") {
 		return "", 0, "", nil
 	}
