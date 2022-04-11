@@ -23,8 +23,8 @@ And our goal is: efficient and sustainable use (only use official libraries).
 
 ### Unsupported
 - canvas blend mode
-	- If canvas blend mode is a necessary for your project, please keep using [HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine)
-- sol metadata
+	- If canvas blend mode is necessary for your project, please keep using [HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine)
+- SOL metadata
 - static background
 - extra metadata
 - pixel or gif output
@@ -33,7 +33,7 @@ And our goal is: efficient and sustainable use (only use official libraries).
 	- Spawns 50% faster on our computer compare to single thread
 - Colorsets for multi-component color combinations
 - Limited component collocation
-	- for example: this hair may only appear on that head
+	- for example: this hair may only appears on that head
 - Set start id
 - Set custom 'none' property name
 - More metadata output options
