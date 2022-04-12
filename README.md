@@ -24,6 +24,7 @@ And our goal is: efficient and sustainable use (only use official libraries).
 ### Unsupported
 - canvas blend mode
 	- If canvas blend mode is necessary for your project, please keep using [HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine)
+	- It takes 50 seconds for a single thread to generate 100 images, but it can be shortened to 20 seconds after multi-threading is enabled. (Complete test on our computer)
 - SOL metadata
 - static background
 - extra metadata
@@ -65,9 +66,85 @@ And here are some descriptions about some fields in `config.json`
 |metadataSettings.saveDnaInMetadata|save dna in metadata or not|
 |metadataSettings.showNoneInMetadata|save none attribute in metadata or not|
 |metadataSettings.noneAttributeName|specify your own 'none' file name|
-|processCount|how many threads used to generate at the same time|
+|processCount|how many threads used to generate at the same time, Recommended 2 ~ 3|
 |layersOrder.options.hideInMetadata|hide this layer from metadata|
 |layersOrder.options.colorSet|which colorset should this layer belong|
 |layersOrder.options.isColorBase|if set to 'true', colors will come from this layer for that colorset|
 
 Hope you create some awesome artworks with this code💄
+
+# 中文
+本工具的灵感与基础来源于 [HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine).
+
+## 我们的官方链接
+[🐦  Twitter](https://twitter.com/LipConqueror)
+
+[💄  Discord](https://discord.gg/ey2Ek2bXAD)
+
+[💄  NFT](https://lipconq.com/)
+
+## 为什么要打造一个新的工具?
+JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到canvas相关库的安装与使用时), 我们相信很多人面临着和我们一样的问题。
+
+同时，在制作我们自己的NFT项目时，我们也遇到了许多的新的需求，其中一些可以通过修改已有的代码来解决，但也有一些很难实现。
+
+所以最终，我们决定用我们熟悉的语言（Go）来重写整个工具。
+
+并且我们的目标是：高效且持续可用（通过只使用官方库来实现）。
+
+## 功能差异
+
+### 不支持
+- canvas blend mode
+	- 如果canvas blend mode对你项目来说是必须的，那么请继续使用[HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine)
+- SOL metadata
+- 静态背景
+- 额外的metadata
+- 像素化和生成动图
+### 新增
+- 多线程生成
+	- 生成速度在我们的电脑上提高了50%以上，对比单线程生成
+	- 同样生成100张图片，单线程需要50秒，开启多线程后可以缩短到20秒（在我们的电脑上完成测试）
+- 色彩集合-跨组件/层级的多组件/层级颜色统一方案
+- 限定组件搭配
+	- 举个🌰：只有这个头型能顶那个特殊发型
+- 设定起始ID
+- 设置自定义的‘空’组件名称
+- 更多元数据自定义选项
+	- 是否展示‘空’组件, 是否展示DNA, 等等
+- 保存和读取DNA历史 (即将到来)
+- 数值属性生成 (即将到来)
+- 文件可执行，无需go环境（即将到来）
+
+## 安装使用
+请先确保你已经安装了官方的go语言环境。(>= go 1.16)
+官方Go: https://go.dev
+
+然后运行:
+
+    git clone https://github.com/LipConqueror/golips_art_engine.git
+进入你刚刚clone的文件夹, 然后运行:
+
+    go run .
+然后就没了！
+
+就像我们上面提到的那样，这个工具完全没有依赖任何第三方库，所以你不需要再做任何其他的事情。
+你可以在`builds`文件夹中找到NFT和元数据。
+
+## 配置文件
+你可以在`golips_art_engine/conf/`文件夹下找到`config.json`，其中包含了所有生成NFT的相关配置。
+下面是`config.json`中的一些属性及其解释
+
+| 字段 | 解释 |
+|--|--|
+| dnaSettings.startId | 生成的NFT的起始ID |
+|metadataSettings.saveDnaInMetadata|是否要在元数据中保存DNA|
+|metadataSettings.showNoneInMetadata|是否要在元数据中保存属性为‘空’的图层|
+|metadataSettings.noneAttributeName|设定你自己的‘空’属性名|
+|processCount|同时进行生成的线程数，推荐是2~3|
+|layersOrder.options.hideInMetadata|是否在元数据中隐藏这一图层|
+|layersOrder.options.colorSet|这一图层属于哪个色彩集合|
+|layersOrder.options.isColorBase|如果这个字段为'true', 那么这个色彩集合的颜色名，将出自此图层|
+
+希望大家可以用我们的工具创造出更多优秀的作品！💄
+也希望国产项目能真正走向世界！
