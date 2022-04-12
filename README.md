@@ -43,6 +43,19 @@ And our goal is: efficient and sustainable use (only use official libraries).
 - Numerical attributes generation (coming soon)
 
 ## Installation
+
+### Use release
+
+Put the file of the your operating system to the folder to generate the image, and ensure that the directory of the file contains the following structure
+```
+	- Your folder
+	  - golips_art_engine_XXX
+	  - conf/config.json
+	  - layers/your_layers_for_generating
+```
+
+### Code
+
 Please make sure to install the official environment of the go language. (>= go 1.16)
 Official Go: https://go.dev
 
@@ -114,9 +127,21 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 	- 是否展示‘空’组件, 是否展示DNA, 等等
 - 保存和读取DNA历史 (即将到来)
 - 数值属性生成 (即将到来)
-- 文件可执行，无需go环境（即将到来）
 
 ## 安装使用
+
+### 使用可执行文件
+
+将对应系统的可执行文件放到要生成图片的文件夹下，并确保文件的目录包含以下结构
+```
+	- Your folder
+	  - golips_art_engine_XXX
+	  - conf/config.json
+	  - layers/your_layers_for_generating
+```
+
+### 代码
+
 请先确保你已经安装了官方的go语言环境。(>= go 1.16)
 
 官方Go: https://go.dev
