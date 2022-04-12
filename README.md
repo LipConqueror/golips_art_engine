@@ -54,6 +54,10 @@ Put the file of the your operating system to the folder to generate the image, a
   - layers/your_layers_for_generating
 ```
 
+Examples of `conf` and `layers` folders you can find in this project
+
+After making sure that the config file and layer files have been configured, go into the folder and run `golips_art_engine_XXX`
+
 ### Code
 
 Please make sure to install the official environment of the go language. (>= go 1.16)
@@ -139,6 +143,10 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
   - conf/config.json
   - layers/your_layers_for_generating
 ```
+
+关于`conf`和`layers`文件夹的示例，你都可以在本项目中找到
+
+在确保配置文件和图层文件都已经配置完毕后，进入文件夹，运行`golips_art_engine_XXX`
 
 ### 代码
 
