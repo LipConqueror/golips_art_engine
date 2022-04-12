@@ -44,14 +44,14 @@ And our goal is: efficient and sustainable use (only use official libraries).
 
 ## Installation
 
-### Use release
+### Use Release
 
 Put the file of the your operating system to the folder to generate the image, and ensure that the directory of the file contains the following structure
 ```
-	- Your folder
-	  - golips_art_engine_XXX
-	  - conf/config.json
-	  - layers/your_layers_for_generating
+- Your folder
+  - golips_art_engine_XXX
+  - conf/config.json
+  - layers/your_layers_for_generating
 ```
 
 ### Code
@@ -130,14 +130,14 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 
 ## 安装使用
 
-### 使用可执行文件
+### 使用可执行文件(Release)
 
 将对应系统的可执行文件放到要生成图片的文件夹下，并确保文件的目录包含以下结构
 ```
-	- Your folder
-	  - golips_art_engine_XXX
-	  - conf/config.json
-	  - layers/your_layers_for_generating
+- Your folder
+  - golips_art_engine_XXX
+  - conf/config.json
+  - layers/your_layers_for_generating
 ```
 
 ### 代码
