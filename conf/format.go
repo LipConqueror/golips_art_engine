@@ -6,12 +6,13 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	"golips_art_engine/models"
 )
 
 func GetConfig(debug bool) (*models.Config, error) {
-	file, err := os.Open("./conf/config.json")
+	file, err := os.Open(filepath.Join(".", "conf", "config.json"))
 
 	if err != nil {
 		if debug {
