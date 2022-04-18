@@ -25,9 +25,9 @@ And our goal is: efficient and sustainable use (only use official libraries).
 - canvas blend mode
 	- If canvas blend mode is necessary for your project, please keep using [HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine)
 	- It takes 50 seconds for a single thread to generate 100 images, but it can be shortened to 20 seconds after multi-threading is enabled. (Complete test on our computer)
-- SOL metadata
+- ~~SOL metadata~~ (Supported in v0.0.2)
 - static background
-- extra metadata
+- ~~extra metadata~~ (Supported in v0.0.2)
 - pixel or gif output
 ### New
 - Multi-threaded generation
@@ -114,9 +114,9 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 ### 不支持
 - canvas blend mode
 	- 如果canvas blend mode对你项目来说是必须的，那么请继续使用[HashLips Art Engine](https://github.com/HashLips/hashlips_art_engine)
-- SOL metadata
+- ~~SOL metadata~~ (v0.0.2已支持)
 - 静态背景
-- 额外的metadata
+- ~~额外的metadata~~ (v0.0.2已支持)
 - 像素化和生成动图
 ### 新增
 - 多线程生成

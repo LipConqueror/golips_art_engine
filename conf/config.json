@@ -26,7 +26,23 @@
 	"metadataSettings": {
 		"saveDnaInMetadata": true,
 		"showNoneInMetadata": false,
-		"noneAttributeName": "none"
+		"noneAttributeName": "none",
+		"extraMetadata": {
+			"coWorkers": 111,
+			"rareCount": "222"
+		},
+		"outputEthFormat": true,
+		"outputSolanaFormat": true,
+		"showEditionInMetadata": true
+	},
+	"solanaMetadata": {
+		"symbol": "LIPC",
+		"seller_fee_basis_points": 1000,
+		"external_url": "https://lipconq.com/",
+		"creators": [{
+			"address": "FsrnTsydAeq5o12jiSi7ZYvnXB2xchHxLnvc4fZDK7Q6",
+			"share": 100
+		}]
 	},
 	"logSettings": {
 		"showGeneratingProgress": false,
@@ -35,43 +51,36 @@
 	"processCount": 2,
 	"layerConfigurations": [{
 		"growEditionSizeTo": 10,
-		"layersOrder": [
-			{
-				"name": "square",
-				"options": {
-					"bypassDNA": true,
-					"hideInMetadata": true
-				}
-			},
-			{
-				"name": "circle color",
-				"options": {
-					"isColorBase": true,
-					"colorSet": "circle"
-				}
-			},
-			{
-				"name": "circle 1",
-				"options": {
-					"colorSet": "circle",
-					"displayName": "inner case"
-				}
-			},
-			{
-				"name": "circle 2",
-				"options": {
-					"colorSet": "circle"
-				}
-			},
-			{
-				"name": "circle 3",
-				"options": {
-					"colorSet": "circle"
-				}
-			},
-			{
-				"name": "triangle"
+		"layersOrder": [{
+			"name": "square",
+			"options": {
+				"bypassDNA": true,
+				"hideInMetadata": true
 			}
-		]
+		}, {
+			"name": "circle color",
+			"options": {
+				"isColorBase": true,
+				"colorSet": "circle"
+			}
+		}, {
+			"name": "circle 1",
+			"options": {
+				"colorSet": "circle",
+				"displayName": "inner case"
+			}
+		}, {
+			"name": "circle 2",
+			"options": {
+				"colorSet": "circle"
+			}
+		}, {
+			"name": "circle 3",
+			"options": {
+				"colorSet": "circle"
+			}
+		}, {
+			"name": "triangle"
+		}]
 	}]
 }

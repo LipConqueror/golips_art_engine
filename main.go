@@ -25,10 +25,11 @@ import (
 )
 
 const (
-	inputDir          = "layers"
-	outputDir         = "builds"
-	outputImagesDir   = "images"
-	outputMetadataDir = "json"
+	inputDir             = "layers"
+	outputDir            = "builds"
+	outputImagesDir      = "images"
+	outputMetadataDir    = "json"
+	outputSolMetadataDir = "json-sol"
 )
 
 var (
@@ -94,6 +95,17 @@ func main() {
 			log.Println("[CreateFolder]", err)
 		}
 		panic(err)
+	}
+
+	if config.MetadataSettings.OutputSOLFormat {
+		err = os.MkdirAll(filepath.Join(".", outputDir, outputSolMetadataDir), os.ModePerm)
+
+		if err != nil {
+			if debug {
+				log.Println("[CreateFolder]", err)
+			}
+			panic(err)
+		}
 	}
 
 	for i, _ := range config.LayerConfigurations {
@@ -266,7 +278,13 @@ func main() {
 
 				png.Encode(newImg, dst)
 
-				saveMetadata(num, dna, config, attributesList)
+				if config.MetadataSettings.OutputEthFormat {
+					saveMetadataErc721(num, dna, config, attributesList)
+				}
+
+				if config.MetadataSettings.OutputSOLFormat {
+					saveMetadataSolana(num, dna, config, attributesList)
+				}
 
 				genCount += 1
 				processChan <- true
@@ -284,7 +302,7 @@ func main() {
 	log.Printf("NFT Generated: %d\nAll Done!\n", genCount)
 }
 
-func saveMetadata(id int, dna string, config *models.Config, attributes []models.MetaDataAttribute) {
+func saveMetadataErc721(id int, dna string, config *models.Config, attributes []models.MetaDataAttribute) {
 	var metadata = models.MetadataErc721{}
 
 	metadata.Name = fmt.Sprintf("%s #%d", config.NamePrefix, id)
@@ -300,6 +318,14 @@ func saveMetadata(id int, dna string, config *models.Config, attributes []models
 	metadata.Attributes = attributes
 	metadata.Compiler = "GoLips Art Engine"
 
+	if config.MetadataSettings.ExtraMetadata != nil {
+		metadata.ExtraMetadata = "has#@!"
+	}
+
+	if config.MetadataSettings.ShowEditionInMetadata {
+		metadata.Edition = id
+	}
+
 	newJson, err := os.Create(filepath.Join(".", outputDir, outputMetadataDir, fmt.Sprintf("%d.json", id)))
 
 	if err != nil {
@@ -309,16 +335,149 @@ func saveMetadata(id int, dna string, config *models.Config, attributes []models
 		panic(err)
 	}
 
-	je := json.NewEncoder(newJson)
+	if config.MetadataSettings.ExtraMetadata != nil {
+		data, err := json.Marshal(&metadata)
 
-	err = je.Encode(&metadata)
+		if err != nil {
+			if debug {
+				log.Println("[JsonMarshal]", err)
+			}
+			panic(err)
+		}
+
+		extraData, err := json.Marshal(config.MetadataSettings.ExtraMetadata)
+
+		if err != nil {
+			if debug {
+				log.Println("[JsonMarshal]", err)
+			}
+			panic(err)
+		}
+
+		extraStr := strings.Replace(string(extraData), "{", "", -1)
+
+		extraStr = strings.Replace(extraStr, "}", "", -1)
+
+		newString := strings.Replace(string(data), `"extra!@#":"has#@!"`, extraStr, -1)
+
+		_, err = newJson.WriteString(newString)
+
+		if err != nil {
+			if debug {
+				log.Println("[WriteFile]", err)
+			}
+			panic(err)
+		}
+	} else {
+		je := json.NewEncoder(newJson)
+
+		err = je.Encode(&metadata)
+
+		if err != nil {
+			if debug {
+				log.Println("[JsonMarshal]", err)
+			}
+			panic(err)
+		}
+	}
+
+}
+
+func saveMetadataSolana(id int, dna string, config *models.Config, attributes []models.MetaDataAttribute) {
+	var metadata = models.MetadataSolana{}
+
+	metadata.Name = fmt.Sprintf("%s #%d", config.NamePrefix, id)
+	metadata.Symbol = config.SolanaMetadata.Symbol
+	metadata.SellerFeeBasisPoints = config.SolanaMetadata.SellerFeeBasisPoints
+
+	metadata.Description = config.Description
+
+	metadata.Image = fmt.Sprintf("%d.png", id)
+	metadata.ExternalUrl = config.SolanaMetadata.ExternalUrl
+
+	if config.MetadataSettings.SaveDnaInMetadata {
+		metadata.Dna = utils.GetSha1Hash(dna)
+	}
+
+	metadata.Attributes = attributes
+	metadata.Compiler = "GoLips Art Engine"
+
+	if config.MetadataSettings.ExtraMetadata != nil {
+		metadata.ExtraMetadata = "has#@!"
+	}
+
+	if config.MetadataSettings.ShowEditionInMetadata {
+		metadata.Edition = id
+	}
+
+	propFile := models.SolanaPropertyFile{
+		Uri:  fmt.Sprintf("%d.png", id),
+		Type: "image/png",
+	}
+
+	prop := models.SolanaProperty{
+		Category: "image",
+		Creators: config.SolanaMetadata.Creators,
+		Files:    []models.SolanaPropertyFile{propFile},
+	}
+
+	metadata.Properties = prop
+
+	newJson, err := os.Create(filepath.Join(".", outputDir, outputSolMetadataDir, fmt.Sprintf("%d.json", id)))
 
 	if err != nil {
 		if debug {
-			log.Println("[JsonMarshal]", err)
+			log.Println("[CreateJson]", err)
 		}
 		panic(err)
 	}
+
+	if config.MetadataSettings.ExtraMetadata != nil {
+		data, err := json.Marshal(&metadata)
+
+		if err != nil {
+			if debug {
+				log.Println("[JsonMarshal]", err)
+			}
+			panic(err)
+		}
+
+		extraData, err := json.Marshal(config.MetadataSettings.ExtraMetadata)
+
+		if err != nil {
+			if debug {
+				log.Println("[JsonMarshal]", err)
+			}
+			panic(err)
+		}
+
+		extraStr := strings.Replace(string(extraData), "{", "", -1)
+
+		extraStr = strings.Replace(extraStr, "}", "", -1)
+
+		newString := strings.Replace(string(data), `"extra!@#":"has#@!"`, extraStr, -1)
+
+		_, err = newJson.WriteString(newString)
+
+		if err != nil {
+			if debug {
+				log.Println("[WriteFile]", err)
+			}
+			panic(err)
+		}
+	} else {
+		je := json.NewEncoder(newJson)
+
+		err = je.Encode(&metadata)
+
+		if err != nil {
+			if debug {
+				log.Println("[JsonMarshal]", err)
+			}
+			panic(err)
+		}
+	}
+
 }
 
 // pass layer config

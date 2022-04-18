@@ -20,7 +20,21 @@ type Config struct {
 	ProcessCount      json.Number      `json:"processCount"`
 	LogSettings       LogSettings      `json:"logSettings"`
 
+	SolanaMetadata SolanaMetadataSettings `json:"solanaMetadata"`
+
 	LayerConfigurations []LayerConfiguration `json:"layerConfigurations"`
+}
+
+type SolanaMetadataSettings struct {
+	Symbol               string          `json:"symbol"`                  // solana
+	SellerFeeBasisPoints json.Number     `json:"seller_fee_basis_points"` // solana
+	ExternalUrl          string          `json:"external_url"`            // solana
+	Creators             []SolanaCreator `json:"creators"`
+}
+
+type SolanaCreator struct {
+	Address string      `json:"address"`
+	Share   json.Number `json:"share"`
 }
 
 type DnaSettings struct {
@@ -34,6 +48,13 @@ type MetadataSettings struct {
 	SaveDnaInMetadata  bool   `json:"saveDnaInMetadata"`
 	ShowNoneInMetadata bool   `json:"showNoneInMetadata"`
 	NoneAttributeName  string `json:"noneAttributeName"`
+
+	ExtraMetadata *ExtraMetadata `json:"extraMetadata"`
+
+	OutputEthFormat bool `json:"outputEthFormat"`
+	OutputSOLFormat bool `json:"outputSolanaFormat"`
+
+	ShowEditionInMetadata bool `json:"showEditionInMetadata"`
 }
 
 type LogSettings struct {
@@ -84,18 +105,4 @@ type Background struct {
 	Static        bool    `json:"static"`
 	Default       string  `json:"default"`
 	BrightnessNum float64 `json:"-"`
-}
-
-type MetadataErc721 struct {
-	Name        string              `json:"name"`
-	Description string              `json:"description,omitempty"`
-	Image       string              `json:"image,omitempty"`
-	Dna         string              `json:"dna,omitempty"`
-	Attributes  []MetaDataAttribute `json:"attributes"`
-	Compiler    string              `json:"compiler,omitempty"`
-}
-
-type MetaDataAttribute struct {
-	TraitType string `json:"trait_type"`
-	Value     string `json:"value"`
 }
