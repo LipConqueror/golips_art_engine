@@ -3,8 +3,8 @@
 	"description": "Remember to replace this description",
 	"baseUri": "ipfs://NewUriToReplace",
 	"rarityDelimiter": "#",
-	"colorSetDelimiter": "|",
-	"limitDelimiter": "*",
+	"colorSetDelimiter": "$",
+	"limitDelimiter": "^",
 	"dnaDelimiter": "-",
 	"format": {
 		"width": 512,

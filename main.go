@@ -35,8 +35,8 @@ const (
 var (
 	debug             bool = true
 	rarityDelimiter        = "#"
-	colorSetDelimiter      = "|"
-	limitDelimiter         = "*"
+	colorSetDelimiter      = "$"
+	limitDelimiter         = "^"
 	dnaDelimiter           = "-"
 )
 
