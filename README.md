@@ -74,9 +74,9 @@ Note: you should always use the name of the underlying element as the key
 Put the file of the your operating system to the folder to generate the image, and ensure that the directory of the file contains the following structure
 ```
 - Your folder
-  - golips_art_engine_XXX
-  - conf/config.json
-  - layers/your_layers_for_generating
+  - golips_art_engine_XXX (The executable file corresponding to your computer system)
+  - conf/config.json (Configuration file, create a 'conf' folder and put the 'config.json' file in it)
+  - layers/your_layers_for_generating (Your layer files)
 ```
 
 Examples of `conf` and `layers` folders you can find in this project
@@ -188,10 +188,10 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 
 将对应系统的可执行文件放到要生成图片的文件夹下，并确保文件的目录包含以下结构
 ```
-- Your folder
-  - golips_art_engine_XXX
-  - conf/config.json
-  - layers/your_layers_for_generating
+- 你的文件夹
+  - golips_art_engine_XXX（对应你电脑系统的可执行文件）
+  - conf/config.json （配置文件，创建一个conf文件夹，再将config.json文件放入其中）
+  - layers/your_layers_for_generating （你的图层文件们）
 ```
 
 关于`conf`和`layers`文件夹的示例，你都可以在本项目中找到
