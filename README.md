@@ -47,6 +47,7 @@ And our goal is: efficient and sustainable use (only use official libraries).
 ### Conflict Elements
 
 For example, let's assume `layer A` is rendered before `layer B`, and there is an element named `cloth1` in `layer A`, which is conflict with the element named `necklace1` in `layer B`, before this, maybe you need to manually check these conditions, but now, you can directly add the following settings to `config.json` to achieve this goal:
+
 When the random algorithm selects `cloth1` in `layer A`, `necklace1` in `layer B` will be ignored directly, instead, it will select one of the other elements.
 
 ![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_1.png)
@@ -62,6 +63,9 @@ Also, if `cloth1` is also conflict with `necklace2`, you can change the line to 
 ```
 "cloth1": "necklace1,necklace2"
 ```
+i.e.: you can use commas `,` to connect multiple upper-level elements that conflict with the same underlying element
+
+Note: you should always use the name of the underlying element as the key
 
 ## Installation
 
@@ -158,6 +162,7 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 ### 冲突元素
 
 举个例子，我们假设`layer A`会在`layer B`之前渲染，在`layer A`中呢，有一个元素叫`cloth1`，但这个元素与`layer B`中的元素`necklace1`冲突了，在这之前，也许你需要手动检查找出这种情况，但现在，你可以直接在`config.json`加入如下配置来实现这个效果：
+
 当随机算法在`layer A`中选择了`cloth1`之后，算法将直接无视`layer B`中的`necklace1`元素，而从其他元素中选择一个。
 
 ![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_1.png)
@@ -173,6 +178,9 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 ```
 "cloth1": "necklace1,necklace2"
 ```
+即：你可以使用英文逗号`,`来连接与同一个底层元素冲突的多个上层元素
+
+注意：应该永远用底层元素的名称作为key来使用
 
 ## 安装使用
 
