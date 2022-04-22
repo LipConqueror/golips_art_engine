@@ -65,6 +65,7 @@ type LogSettings struct {
 type LayerConfiguration struct {
 	GrowEditionSizeTo int               `json:"growEditionSizeTo"`
 	LayersOrder       []LayerOrder      `json:"layersOrder"`
+	ConflictElements  map[string]string `json:"conflictElements"`
 	ColorSets         map[string]string `json:"-"` // k-v: colorSet-color ie: hair-red
 }
 

@@ -51,6 +51,9 @@
 	"processCount": 2,
 	"layerConfigurations": [{
 		"growEditionSizeTo": 10,
+		"conflictElements": {
+			"cloth1": "necklace1,necklace2"
+		},
 		"layersOrder": [{
 			"name": "square",
 			"options": {

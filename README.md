@@ -35,12 +35,33 @@ And our goal is: efficient and sustainable use (only use official libraries).
 - Colorsets for multi-component color combinations
 - Limited component collocation
 	- for example: this hair may only appears on that head
+- Conflict elements (v0.0.3)
+    - for example: this necklace will not match this dress
 - Set start id
 - Set custom 'none' property name
 - More metadata output options
 	- show 'none' property or not, show dna or not, etc.
 - Save and load DNA history (coming soon)
 - Numerical attributes generation (coming soon)
+
+### Conflict Elements
+
+For example, let's assume `layer A` is rendered before `layer B`, and there is an element named `cloth1` in `layer A`, which is conflict with the element named `necklace1` in `layer B`, before this, maybe you need to manually check these conditions, but now, you can directly add the following settings to `config.json` to achieve this goal:
+When the random algorithm selects `cloth1` in `layer A`, `necklace1` in `layer B` will be ignored directly, instead, it will select one of the other elements.
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_1.png)
+
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_2.png)
+
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_3.png)
+
+
+Also, if `cloth1` is also conflict with `necklace2`, you can change the line to below style:
+```
+"cloth1": "necklace1,necklace2"
+```
 
 ## Installation
 
@@ -125,12 +146,33 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 - 色彩集合-跨组件/层级的多组件/层级颜色统一方案
 - 限定组件搭配
 	- 举个🌰：只有这个头型能顶那个特殊发型
+- 冲突元素(v0.0.3)
+    - 举个🌰：当穿了这件衣服，就不能搭配那条项链了
 - 设定起始ID
 - 设置自定义的‘空’组件名称
 - 更多元数据自定义选项
 	- 是否展示‘空’组件, 是否展示DNA, 等等
 - 保存和读取DNA历史 (即将到来)
 - 数值属性生成 (即将到来)
+
+### 冲突元素
+
+举个例子，我们假设`layer A`会在`layer B`之前渲染，在`layer A`中呢，有一个元素叫`cloth1`，但这个元素与`layer B`中的元素`necklace1`冲突了，在这之前，也许你需要手动检查找出这种情况，但现在，你可以直接在`config.json`加入如下配置来实现这个效果：
+当随机算法在`layer A`中选择了`cloth1`之后，算法将直接无视`layer B`中的`necklace1`元素，而从其他元素中选择一个。
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_1.png)
+
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_2.png)
+
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/conflict_example_3.png)
+
+
+同时，如果`cloth1`同时还与`necklace2`冲突，那么你可以修改这一行代码为如下的形式：
+```
+"cloth1": "necklace1,necklace2"
+```
 
 ## 安装使用
 

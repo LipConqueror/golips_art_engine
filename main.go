@@ -488,6 +488,8 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 		// to find out limit quickly, key is 'layer-element'
 		usedElements = make(map[string]bool, 0)
 		dnaKeys      = make([]string, 0)
+		// key: elements that can not be used due to conflict
+		conflictUsed = make(map[string]bool, 0)
 	)
 
 	for _, layer := range layerConfig.LayersOrder {
@@ -515,6 +517,11 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 				}
 			}
 
+			// check if this element has conflict
+			if conflictUsed[v.Name] {
+				continue
+			}
+
 			totalWeight += v.Weight
 			tempElementList = append(tempElementList, v)
 		}
@@ -528,6 +535,11 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 							if v.Color != color {
 								continue
 							}
+						}
+
+						// check if this element has conflict
+						if conflictUsed[v.Name] {
+							continue
 						}
 
 						totalWeight += v.Weight
@@ -555,6 +567,16 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 				dnaKey := getLimitKey(layer.Options.DisplayName, v.Name)
 				usedElements[dnaKey] = true
 
+				conflictNames, exist := layerConfig.ConflictElements[v.Name]
+
+				if exist {
+					AddNewConflicts(conflictUsed, conflictNames)
+					if debug {
+						fmt.Println("Conflict Added")
+						fmt.Println(conflictUsed)
+					}
+				}
+
 				if !layer.Options.BypassDNA {
 					dnaKeys = append(dnaKeys, dnaKey)
 				}
@@ -569,6 +591,15 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 	}
 
 	return strings.Join(dnaKeys, dnaDelimiter), elementList
+}
+
+func AddNewConflicts(origin map[string]bool, newC string) {
+
+	conflictNames := strings.Split(newC, ",")
+
+	for _, v := range conflictNames {
+		origin[v] = true
+	}
 }
 
 func getLimitKey(layerName string, elementName string) string {
@@ -622,7 +653,7 @@ func getElementsFromDir(dir string, isColorSet bool, startId int) ([]models.Laye
 		if debug {
 			log.Println("[ReadFile]", err)
 		}
-		panic("Read File Failed")
+		panic("Read File Failed:" + err.Error())
 	}
 
 	var (
