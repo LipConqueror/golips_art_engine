@@ -48,9 +48,12 @@
 		"showGeneratingProgress": false,
 		"debug": false
 	},
+	"multiVersionSettings": {
+		"layerName": ""
+	},
 	"processCount": 2,
 	"layerConfigurations": [{
-		"growEditionSizeTo": 10,
+		"growEditionSizeTo": 50,
 		"conflictElements": {
 			"cloth1": "necklace1,necklace2"
 		},

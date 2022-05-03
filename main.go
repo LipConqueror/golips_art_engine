@@ -40,6 +40,10 @@ var (
 	dnaDelimiter           = "-"
 )
 
+func getMultiVersionFolderName(layerName string) string {
+	return outputImagesDir + "-" + layerName
+}
+
 func main() {
 
 	log.Println("Reading Config...")
@@ -99,6 +103,17 @@ func main() {
 
 	if config.MetadataSettings.OutputSOLFormat {
 		err = os.MkdirAll(filepath.Join(".", outputDir, outputSolMetadataDir), os.ModePerm)
+
+		if err != nil {
+			if debug {
+				log.Println("[CreateFolder]", err)
+			}
+			panic(err)
+		}
+	}
+
+	if config.MultiVersionSettings.LayerName != "" {
+		err = os.MkdirAll(filepath.Join(".", outputDir, getMultiVersionFolderName(config.MultiVersionSettings.LayerName)), os.ModePerm)
 
 		if err != nil {
 			if debug {
@@ -174,6 +189,17 @@ func main() {
 			}
 
 			go func() {
+
+				var (
+					dstMv = &image.RGBA{}
+
+					hasMultiVersion = config.MultiVersionSettings.LayerName != ""
+				)
+
+				if hasMultiVersion {
+					dstMv = image.NewRGBA(image.Rect(0, 0, config.Format.Width, config.Format.Height))
+				}
+
 				dst := image.NewRGBA(image.Rect(0, 0, config.Format.Width, config.Format.Height))
 
 				// generate random background
@@ -181,6 +207,10 @@ func main() {
 					backColor := genColor(config.Background.BrightnessNum)
 
 					draw.Draw(dst, dst.Bounds(), &image.Uniform{backColor}, image.ZP, draw.Src)
+
+					if hasMultiVersion {
+						draw.Draw(dstMv, dst.Bounds(), &image.Uniform{backColor}, image.ZP, draw.Src)
+					}
 				}
 
 				var (
@@ -201,9 +231,13 @@ func main() {
 					if existDNAs[dna] {
 						dnaCheckTimes += 1
 
-						if dnaCheckTimes > 5 {
-							panic("Too many duplicate times. Please make sure layers have enough amount.")
+						if dnaCheckTimes > 20 {
+							log.Printf("NFT Generated: %d\n", num-config.DnaSettings.StartId)
+							log.Println("Too many duplicate times. Please make sure traits have enough amount.")
+							os.Exit(2)
 						}
+						dnaMutex.Unlock()
+						continue
 					} else {
 						existDNAs[dna] = true
 					}
@@ -230,39 +264,42 @@ func main() {
 					img, exist := imgCache[e.Path]
 
 					imgMutex.RUnlock()
-					if exist {
+					if !exist {
+						imgFile, err := os.Open(e.Path)
+
+						if err != nil {
+							if debug {
+								log.Println("[ReadImage]", err)
+								log.Println("[ImagePath]", e.Path)
+							}
+							panic(err)
+						}
+
+						defer imgFile.Close()
+
+						img, _, err = image.Decode(imgFile)
+
+						if err != nil {
+							if debug {
+								log.Println("[ParseImage]", err)
+								log.Println("[ImagePath]", e.Path)
+							}
+							panic(err)
+						}
+
+						imgMutex.Lock()
+						imgCache[e.Path] = img
+
+						imgMutex.Unlock()
+					}
+
+					if e.BelongLayerName != config.MultiVersionSettings.LayerName {
 						draw.Draw(dst, dst.Bounds(), img, image.ZP, draw.Over)
-						continue
 					}
 
-					imgFile, err := os.Open(e.Path)
-
-					if err != nil {
-						if debug {
-							log.Println("[ReadImage]", err)
-							log.Println("[ImagePath]", e.Path)
-						}
-						panic(err)
+					if hasMultiVersion {
+						draw.Draw(dstMv, dst.Bounds(), img, image.ZP, draw.Over)
 					}
-
-					defer imgFile.Close()
-
-					img, _, err = image.Decode(imgFile)
-
-					if err != nil {
-						if debug {
-							log.Println("[ParseImage]", err)
-							log.Println("[ImagePath]", e.Path)
-						}
-						panic(err)
-					}
-
-					imgMutex.Lock()
-					imgCache[e.Path] = img
-
-					imgMutex.Unlock()
-
-					draw.Draw(dst, dst.Bounds(), img, image.ZP, draw.Over)
 				}
 
 				newImg, err := os.Create(filepath.Join(".", outputDir, outputImagesDir, fmt.Sprintf("%d.png", num)))
@@ -277,6 +314,21 @@ func main() {
 				defer newImg.Close()
 
 				png.Encode(newImg, dst)
+
+				if hasMultiVersion {
+					mvImg, err := os.Create(filepath.Join(".", outputDir, getMultiVersionFolderName(config.MultiVersionSettings.LayerName), fmt.Sprintf("%d.png", num)))
+
+					if err != nil {
+						if debug {
+							log.Println("[CreateImage]", err)
+						}
+						panic(err)
+					}
+
+					defer mvImg.Close()
+
+					png.Encode(mvImg, dstMv)
+				}
 
 				if config.MetadataSettings.OutputEthFormat {
 					saveMetadataErc721(num, dna, config, attributesList)

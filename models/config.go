@@ -20,9 +20,15 @@ type Config struct {
 	ProcessCount      json.Number      `json:"processCount"`
 	LogSettings       LogSettings      `json:"logSettings"`
 
+	MultiVersionSettings MultiVersionSettings `json:"multiVersionSettings"`
+
 	SolanaMetadata SolanaMetadataSettings `json:"solanaMetadata"`
 
 	LayerConfigurations []LayerConfiguration `json:"layerConfigurations"`
+}
+
+type MultiVersionSettings struct {
+	LayerName string `json:"layerName"`
 }
 
 type SolanaMetadataSettings struct {
