@@ -44,6 +44,19 @@ And our goal is: efficient and sustainable use (only use official libraries).
 - Save and load DNA history (coming soon)
 - Numerical attributes generation (coming soon)
 
+### Limited combination
+
+For example, let's assume that `layer A` will be rendered before `layer B`. In `layer A`, there is an element called `hairstyle 1`, which is a cute ball head, and another element called `hairstyle 2`, is ordinary long hair, and `layer B` contains all kinds of accessories that may appear on the head, but this happens, we designed a `hairpin 1`, which is only suitable for ball head `hairstyle 1`, but not for `hairstyle 2`, then we definitely hope that only when `hairstyle 1` is randomly selected in `layer A`, it is possible to randomly get `hairpin 1`.
+
+Then, at this time, it is our turn to use the 'limited combination' function. First, we need to find the `limitDelimiter` field in `config.json`, and then get the value configured by this field. Then, we can enter `layer B` folder, create a new folder inside and name it `layer A^hairstyle 1`, then move the file of `hairpin 1` into the folder we just created, and done! No additional configuration is required! The program will automatically match. Only in `layer A` when `hairstyle 1` is randomly selected, it will read the elements under the folder `layer A^hairstyle 1`, but there is one thing to note, elements in this folder share random probabilities with all other elements in `layer B`.
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_06.png)  ![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_05.png)
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_01.png)
+
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_02.png)
+
 ### Conflict Elements
 
 For example, let's assume `layer A` is rendered before `layer B`, and there is an element named `cloth1` in `layer A`, which is conflict with the element named `necklace1` in `layer B`, before this, maybe you need to manually check these conditions, but now, you can directly add the following settings to `config.json` to achieve this goal:
@@ -159,9 +172,22 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 - 保存和读取DNA历史 (即将到来)
 - 数值属性生成 (即将到来)
 
+### 限定组合
+
+举个例子，我们假设`layer A`会在`layer B`之前渲染, 在`layer A`中呢，有一个元素叫`发型1`，是一个可爱的丸子头，另一个元素叫`发型2`，是普通长发，而`layer B`中包含的，是各种可能出现在头上的饰品，但就会出现这种情况，我们设计了一款`簪子1`，只适用于丸子头的`发型1`，而不适用于`发型2`，那么我们肯定希望只有`layer A`中随机到`发型1`的时候，才有可能随机到`簪子1`。
+
+那么这种时候，就轮到我们的‘限定组合’功能登场了，我们先在`config.json`中找到`limitDelimiter`字段，然后获取这个字段配置的值，接着，我们就可以进入`layer B`的文件夹，在里面再创建一个新的文件夹，并将其命名为`layer A^发型1`，接着，将`簪子1`的文件，移入到我们刚刚创建的文件夹中，然后就结束了！不再需要其他的配置！程序会自动匹配，只有在`layer A`中，随机到`发型1`时，才会去读取`layer A^发型1`这个文件夹下的元素，但有一点需要注意，这个文件夹下的元素，会和`layer B`中的其他所有元素共享随机概率。
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_03.png)  ![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_04.png)
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_01.png)
+
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/golips_example_limit_02.png)
+
 ### 冲突元素
 
-举个例子，我们假设`layer A`会在`layer B`之前渲染，在`layer A`中呢，有一个元素叫`cloth1`，但这个元素与`layer B`中的元素`necklace1`冲突了，在这之前，也许你需要手动检查找出这种情况，但现在，你可以直接在`config.json`加入如下配置来实现这个效果：
+再次举个例子，我们假设`layer A`会在`layer B`之前渲染，在`layer A`中呢，有一个元素叫`cloth1`，但这个元素与`layer B`中的元素`necklace1`冲突了，在这之前，也许你需要手动检查找出这种情况，但现在，你可以直接在`config.json`加入如下配置来实现这个效果：
 
 当随机算法在`layer A`中选择了`cloth1`之后，算法将直接无视`layer B`中的`necklace1`元素，而从其他元素中选择一个。
 
