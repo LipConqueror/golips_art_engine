@@ -57,10 +57,18 @@ type MetadataSettings struct {
 
 	ExtraMetadata *ExtraMetadata `json:"extraMetadata"`
 
+	NumberAttributes []NumberAttribute `json:"numberAttributes"`
+
 	OutputEthFormat bool `json:"outputEthFormat"`
 	OutputSOLFormat bool `json:"outputSolanaFormat"`
 
 	ShowEditionInMetadata bool `json:"showEditionInMetadata"`
+}
+
+type NumberAttribute struct {
+	Name     string `json:"name"`
+	MinValue int    `json:"minValue"`
+	MaxValue int    `json:"maxValue"`
 }
 
 type LogSettings struct {

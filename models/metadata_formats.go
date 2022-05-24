@@ -20,8 +20,11 @@ type MetadataErc721 struct {
 }
 
 type MetaDataAttribute struct {
-	TraitType string `json:"trait_type"`
-	Value     string `json:"value"`
+	DisplayType string      `json:"display_type,omitempty"`
+	TraitType   string      `json:"trait_type"`
+	Value       interface{} `json:"value"`
+	MaxValue    int         `json:"max_value,omitempty"`
+	MinValue    int         `json:"min_value,omitempty"`
 }
 
 type MetadataSolana struct {

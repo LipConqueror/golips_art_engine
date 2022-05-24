@@ -330,6 +330,22 @@ func main() {
 					png.Encode(mvImg, dstMv)
 				}
 
+				if config.MetadataSettings.NumberAttributes != nil {
+					for _, v := range config.MetadataSettings.NumberAttributes {
+						if (v.MaxValue - v.MinValue) <= 0 {
+							continue
+						}
+						max := v.MaxValue - v.MinValue
+						attribute.TraitType = v.Name
+						valueInit := rand.Intn(max)
+						attribute.Value = valueInit + v.MinValue
+						attribute.DisplayType = "number"
+						attribute.MaxValue = v.MaxValue
+						attribute.MinValue = v.MinValue
+						attributesList = append(attributesList, attribute)
+					}
+				}
+
 				if config.MetadataSettings.OutputEthFormat {
 					saveMetadataErc721(num, dna, config, attributesList)
 				}

@@ -33,7 +33,16 @@
 		},
 		"outputEthFormat": true,
 		"outputSolanaFormat": true,
-		"showEditionInMetadata": true
+		"showEditionInMetadata": true,
+		"numberAttributes": [{
+			"name": "attack",
+			"maxValue": 100,
+			"minValue": 0
+		}, {
+			"name": "defend",
+			"maxValue": 50,
+			"minValue": -50
+		}]
 	},
 	"solanaMetadata": {
 		"symbol": "LIPC",
