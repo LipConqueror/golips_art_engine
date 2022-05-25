@@ -42,7 +42,7 @@ And our goal is: efficient and sustainable use (only use official libraries).
 - More metadata output options
 	- show 'none' property or not, show dna or not, etc.
 - Save and load DNA history (coming soon)
-- Numerical attributes generation (coming soon)
+- Numerical attributes generation (v0.0.5)
 
 ### Limited combination
 
@@ -79,6 +79,13 @@ Also, if `cloth1` is also conflict with `necklace2`, you can change the line to 
 i.e.: you can use commas `,` to connect multiple upper-level elements that conflict with the same underlying element
 
 Note: you should always use the name of the underlying element as the key
+
+### Numeric properties
+
+Add the following configuration to the `metadataSettings` field in the `config.json` file to generate a numerical attribute field
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/number_attr_config_en.jpg)
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/number_attr_output_en.jpg)
 
 ## Installation
 
@@ -170,7 +177,7 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 - 更多元数据自定义选项
 	- 是否展示‘空’组件, 是否展示DNA, 等等
 - 保存和读取DNA历史 (即将到来)
-- 数值属性生成 (即将到来)
+- 数值属性生成 (v0.0.5)
 
 ### 限定组合
 
@@ -207,6 +214,13 @@ JS 非常通用, 但仍然会有一些依赖方面的问题(尤其是涉及到ca
 即：你可以使用英文逗号`,`来连接与同一个底层元素冲突的多个上层元素
 
 注意：应该永远用底层元素的名称作为key来使用
+
+### 数值属性
+
+在`config.json`文件中的`metadataSettings`字段中添加如下配置，即可生成数值化的属性字段
+
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/number_attr_config_zh.jpg)
+![](https://github.com/LipConqueror/golips_art_engine/blob/main/number_attr_output_zh.jpg)
 
 ## 安装使用
 
