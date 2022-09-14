@@ -77,10 +77,11 @@ type LogSettings struct {
 }
 
 type LayerConfiguration struct {
-	GrowEditionSizeTo int               `json:"growEditionSizeTo"`
-	LayersOrder       []LayerOrder      `json:"layersOrder"`
-	ConflictElements  map[string]string `json:"conflictElements"`
-	ColorSets         map[string]string `json:"-"` // k-v: colorSet-color ie: hair-red
+	GrowEditionSizeTo int                       `json:"growEditionSizeTo"`
+	LayersOrder       []LayerOrder              `json:"layersOrder"`
+	ConflictElements  map[string]string         `json:"conflictElements"`
+	ColorSets         map[string]string         `json:"-"` // k-v: colorSet-color ie: hair-red
+	Traits            map[string]map[string]int `json:"-"` // k-v: layerName - (elementName-count)
 }
 
 type LayerOrder struct {

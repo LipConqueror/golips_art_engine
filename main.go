@@ -154,6 +154,8 @@ func main() {
 		existDNAs = make(map[string]bool, 0)
 		dnaMutex  = sync.RWMutex{}
 
+		rarityMutex = sync.RWMutex{}
+
 		processChan = make(chan bool, processCount)
 	)
 
@@ -182,6 +184,10 @@ func main() {
 			// -1 is because the i start at 1
 			if config.DnaSettings.StartId > 0 {
 				num = config.DnaSettings.StartId + i - 1
+			}
+
+			if batch > 0 {
+				num += config.LayerConfigurations[batch-1].GrowEditionSizeTo
 			}
 
 			if config.LogSettings.ShowGeneratingProgress {
@@ -257,7 +263,16 @@ func main() {
 							attribute.TraitType = e.BelongLayerName
 							attribute.Value = e.Name
 							attributesList = append(attributesList, attribute)
+
 						}
+
+						rarityMutex.Lock()
+						traits, ok := c.Traits[e.BelongLayerName]
+
+						if ok {
+							traits[e.Name] += 1
+						}
+						rarityMutex.Unlock()
 					}
 
 					imgMutex.RLock()
@@ -358,6 +373,14 @@ func main() {
 				processChan <- true
 			}()
 		}
+
+		for {
+			if len(processChan) == processCount {
+				break
+			}
+		}
+
+		saveRarityFile(batch, c.Traits)
 	}
 
 	// make sure all the render works finish
@@ -368,6 +391,64 @@ func main() {
 	}
 
 	log.Printf("NFT Generated: %d\nAll Done!\n", genCount)
+}
+
+func saveRarityFile(batch int, traits map[string]map[string]int) {
+
+	var (
+		list      = make([]models.TraitLayer, 0)
+		layer     = models.TraitLayer{}
+		trait     = models.Trait{}
+		traitList []models.Trait
+	)
+
+	for la, elements := range traits {
+
+		layer.Name = la
+		layer.Total = len(elements)
+
+		var total = 0
+
+		for _, count := range elements {
+			total += count
+		}
+
+		traitList = make([]models.Trait, 0)
+
+		for name, count := range elements {
+			trait.Name = name
+			trait.Total = count
+			trait.Rate = fmt.Sprintf("%.1f%%", (float32(count)/float32(total))*100)
+
+			traitList = append(traitList, trait)
+		}
+
+		layer.Elements = traitList
+
+		list = append(list, layer)
+	}
+
+	newJson, err := os.Create(filepath.Join(".", outputDir, fmt.Sprintf("bathc-%d-rarity.json", batch+1)))
+
+	if err != nil {
+		if debug {
+			log.Println("[CreateJson]", err)
+		}
+		panic(err)
+	}
+
+	defer newJson.Close()
+
+	je := json.NewEncoder(newJson)
+
+	err = je.Encode(&list)
+
+	if err != nil {
+		if debug {
+			log.Println("[JsonMarshal]", err)
+		}
+		panic(err)
+	}
 }
 
 func saveMetadataErc721(id int, dna string, config *models.Config, attributes []models.MetaDataAttribute) {
@@ -700,6 +781,9 @@ func genColor(brightness float64) color.RGBA {
 }
 
 func layersSetup(layer *models.LayerConfiguration) {
+
+	layer.Traits = make(map[string]map[string]int, 0)
+
 	for i, v := range layer.LayersOrder {
 
 		if v.Options.DisplayName == "" {
@@ -711,6 +795,24 @@ func layersSetup(layer *models.LayerConfiguration) {
 		layer.LayersOrder[i].Elements = list
 		layer.LayersOrder[i].Limits = limits
 
+		// ignore traits if layer shoule be hide in metedata
+		if v.Options.HideInMetadata {
+			continue
+		}
+
+		traits := make(map[string]int, 0)
+
+		for _, e := range list {
+			traits[e.Name] = 0
+		}
+
+		for _, le := range limits {
+			for _, e := range le {
+				traits[e.Name] = 0
+			}
+		}
+
+		layer.Traits[layer.LayersOrder[i].Options.DisplayName] = traits
 	}
 }
 
