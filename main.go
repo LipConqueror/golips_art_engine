@@ -46,6 +46,8 @@ func getMultiVersionFolderName(layerName string) string {
 
 func main() {
 
+	rand.Seed(time.Now().UnixNano())
+
 	log.Println("Reading Config...")
 
 	config, err := conf.GetConfig(debug)
@@ -699,7 +701,7 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 			}
 		}
 
-		rand.Seed(time.Now().UnixNano())
+		// rand.Seed(time.Now().UnixNano())
 
 		target := rand.Float64() * totalWeight
 
@@ -773,7 +775,7 @@ func getBrightnessNum(brightness string) float64 {
 
 func genColor(brightness float64) color.RGBA {
 
-	rand.Seed(time.Now().UnixNano())
+	// rand.Seed(time.Now().UnixNano())
 
 	hue := rand.Float64()
 
