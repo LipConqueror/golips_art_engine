@@ -643,6 +643,54 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 		conflictUsed = make(map[string]bool, 0)
 	)
 
+	// generate color set base first
+	// 首先生成colorset的基础颜色值
+	for _, layer := range layerConfig.LayersOrder {
+		if layer.Options.ColorSet == "" || !layer.Options.IsColorBase {
+			continue
+		}
+
+		var (
+			totalWeight float64 = 0
+		)
+
+		var tempElementList = make([]models.LayerElement, 0)
+
+		for _, v := range layer.Elements {
+
+			// check if this element has conflict
+			if conflictUsed[v.Name] {
+				continue
+			}
+
+			totalWeight += v.Weight
+			tempElementList = append(tempElementList, v)
+		}
+
+		target := rand.Float64() * totalWeight
+
+		for _, v := range tempElementList {
+			target -= v.Weight
+
+			if target < 0 {
+				// save color set
+
+				conflictNames, exist := layerConfig.ConflictElements[v.Name]
+
+				if exist {
+					AddNewConflicts(conflictUsed, conflictNames)
+					if debug {
+						fmt.Println("Conflict Added")
+						fmt.Println(conflictUsed)
+					}
+				}
+
+				colorSets[layer.Options.ColorSet] = v.Name
+				break
+			}
+		}
+	}
+
 	for _, layer := range layerConfig.LayersOrder {
 		var (
 			totalWeight float64 = 0
@@ -706,9 +754,23 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 		target := rand.Float64() * totalWeight
 
 		for _, v := range tempElementList {
+
+			// we selected colorset base colors before, so we should pick it directly
+			// 我们已经选择了颜色集合的基底颜色们, 所以这里应该直接选择它们
+			var colorBasePass = false
+
+			if layer.Options.IsColorBase {
+
+				if colorSets[layer.Options.ColorSet] == v.Name {
+					colorBasePass = true
+				} else {
+					continue
+				}
+			}
+
 			target -= v.Weight
 
-			if target < 0 {
+			if target < 0 || colorBasePass {
 				// save layer info in elements to simplify the logic
 				v.BelongLayerName = layer.Options.DisplayName
 				v.HideInMetadata = layer.Options.HideInMetadata
@@ -732,10 +794,6 @@ func createDNA(layerConfig *models.LayerConfiguration) (string, []models.LayerEl
 					dnaKeys = append(dnaKeys, dnaKey)
 				}
 
-				// set base color for color set
-				if layer.Options.IsColorBase {
-					colorSets[layer.Options.ColorSet] = v.Name
-				}
 				break
 			}
 		}
